@@ -21,7 +21,7 @@ public class RestHook {
 
   public static void refresh() {
     LOG.debug("Refreshing restProperties");
-    restProps = new Properties();
+    RestContext.refresh();
   }
 
   @Before(order = ORDER)
