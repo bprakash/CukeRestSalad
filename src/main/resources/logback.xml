@@ -7,10 +7,10 @@
     </layout>
   </appender>
   
-  <logger name="com.bdd" level="INFO"/>
+  <logger name="com.bdd" level="DEBUG"/>
   
 
-  <root level="info">
+  <root level="debug">
     <appender-ref ref="STDOUT" />
   </root>
 </configuration>

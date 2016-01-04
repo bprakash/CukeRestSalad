@@ -4,6 +4,7 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.emptyIterable;
 import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.hamcrest.Matchers.iterableWithSize;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -23,37 +24,43 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource.Builder;
 
 import cucumber.api.DataTable;
+import cucumber.api.PendingException;
+import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class RestSalad {
 
-  @When("^I request the \"([^\"]*)\" endpoint \"([^\"]*)\"$")
-  public void i_request_the_endpoint(String method, String serviceUrl) throws Throwable {
+  @Given("^I start building a request with \"([^\"]*)\" method and URL \"([^\"]*)\"$")
+  public void i_start_building_a_request_with_method_and_URL(String method, String serviceUrl) throws Throwable {
     RestContext.method = method.toUpperCase();
     RestContext.webresource = Client.create().resource(serviceUrl);
   }
 
-  @When("^I provide parameter \"([^\"]*)\" as \"([^\"]*)\"$")
-  public void i_provide_parameter_as(String key, String value) throws Throwable {
+  @Given("^I add \"([^\"]*)\" equal to \"([^\"]*)\" as parameter to request$")
+  public void i_add_equal_to_as_parameter_to_request(String key, String value) throws Throwable {
     RestContext.webresource = RestContext.webresource.queryParam(key, value);
   }
 
-  @When("^add postBody as:$")
-  public void add_postBody_as(String postBody) throws Throwable {
+  @Given("^I add post body to the request as:$")
+  public void i_add_post_body_to_the_request_as(String postBody) throws Throwable {
     RestContext.postBody = postBody;
   }
 
-  @When("^add below headers:$")
-  public void add_below_headers(DataTable headerTable) throws Throwable {
+  @Given("^I add the below values as headers to the request:$")
+  public void i_add_the_below_values_as_headers_to_the_request(DataTable headerTable) throws Throwable {
     List<Map<String, String>> headerMap = headerTable.asMaps(String.class, String.class);
     if (headerMap != null && headerMap.size() > 0) {
-      RestContext.headerMapList = headerMap;
+      if(RestContext.headerMapList!=null){
+        RestContext.headerMapList.addAll(headerMap);
+      }else{
+        RestContext.headerMapList = headerMap;
+      }
     }
   }
 
-  @When("^I retrieve the JSON results$")
-  public void i_retrive_the_JSON_results() throws Throwable {
+  @Given("^I retrieve the resource$")
+  public void i_retrieve_the_resource() throws Throwable {
     System.out.println(
         RestContext.method + " - " + RestContext.webresource.getURI() + ", headers -" + RestContext.headerMapList);
 
@@ -69,8 +76,8 @@ public class RestSalad {
     System.out.println(RestContext.restResponse);
   }
 
-  @Then("^the status code should be (\\d+)$")
-  public void the_status_code_should_be(int status) throws Throwable {
+  @Then("^the status code returned should be (\\d+)$")
+  public void the_status_code_returned_should_be(int status) throws Throwable {
     System.out.println("RestContext.clientResponse = " + RestContext.clientResponse + " status = " + status);
     assertEquals(status, RestContext.clientResponse.getStatus());
   }
@@ -86,8 +93,10 @@ public class RestSalad {
   }
 
   @Then("^The response should contain \"([^\"]*)\"$")
-  public void the_response_should_contain(String arg1) throws Throwable {
-
+  public void the_response_should_contain(String achvAttrPathToCheck) throws Throwable {
+    List<String> achvAttrValuesActual =
+        JsonPath.parse(RestContext.restResponse).read(achvAttrPathToCheck, new TypeRef<List<String>>() {});
+    assertThat(achvAttrValuesActual, iterableWithSize(greaterThanOrEqualTo(1)));
   }
 
   @Then("^The response should contain \"([^\"]*)\" with values:$")
