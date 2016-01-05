@@ -1,4 +1,4 @@
-package com.bdd.runner;
+package com.bdd.rest.runner;
 
 import org.junit.runner.RunWith;
 
