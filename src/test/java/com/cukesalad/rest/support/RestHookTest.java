@@ -1,4 +1,4 @@
-package com.bdd.support;
+package com.cukesalad.rest.support;
 
 import static org.junit.Assert.*;
 
@@ -7,6 +7,9 @@ import java.io.IOException;
 import static org.hamcrest.Matchers.*;
 
 import org.junit.Test;
+
+import com.cukesalad.rest.support.RestContext;
+import com.cukesalad.rest.support.RestHook;
 
 public class RestHookTest {
 

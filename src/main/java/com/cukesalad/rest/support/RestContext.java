@@ -1,4 +1,4 @@
-package com.bdd.support;
+package com.cukesalad.rest.support;
 
 import java.util.ArrayList;
 import java.util.List;

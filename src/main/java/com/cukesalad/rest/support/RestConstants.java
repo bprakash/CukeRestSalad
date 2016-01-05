@@ -1,4 +1,4 @@
-package com.bdd.support;
+package com.cukesalad.rest.support;
 
 public interface RestConstants {
 

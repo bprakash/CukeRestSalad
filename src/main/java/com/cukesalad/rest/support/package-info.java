@@ -5,4 +5,4 @@
  * @author a542099
  *
  */
-package com.bdd.support;
+package com.cukesalad.rest.support;

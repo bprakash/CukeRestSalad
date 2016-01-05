@@ -1,9 +1,11 @@
-package com.bdd.support;
+package com.cukesalad.rest.support;
 
 import static org.hamcrest.Matchers.arrayWithSize;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import com.cukesalad.rest.support.RestContext;
 
 public class RestContextTest {
 

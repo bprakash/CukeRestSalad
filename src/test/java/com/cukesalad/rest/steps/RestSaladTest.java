@@ -1,4 +1,4 @@
-package com.bdd.restsalad.steps;
+package com.cukesalad.rest.steps;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -23,9 +23,10 @@ import org.junit.Test;
 import org.mockserver.integration.ClientAndServer;
 import org.mockserver.model.HttpRequest;
 
-import com.bdd.support.RestConstants;
-import com.bdd.support.RestContext;
-import com.bdd.support.RestHook;
+import com.cukesalad.rest.steps.RestSalad;
+import com.cukesalad.rest.support.RestConstants;
+import com.cukesalad.rest.support.RestContext;
+import com.cukesalad.rest.support.RestHook;
 import com.sun.jersey.api.client.Client;
 
 import cucumber.api.DataTable;
