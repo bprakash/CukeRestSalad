@@ -99,7 +99,7 @@ Below step definitions validate the :
     And The response should contain "$..expensive"
     And The response should contain "$..author" with values:
     | Nigel Rees  | Evelyn Waugh  | Herman Melville | J. R. R. Tolkien  |
-    And The \"([^\"]*)\" array has element with below attributes:
+    And The "$..book[*]" array has element with below attributes:
      | category  | author           | title                  | price |
      | reference | Nigel Rees       | Sayings of the Century | 8.95  | 
      | fiction   | Evelyn Waugh     | Sword of Honour        | 12.99 | 
