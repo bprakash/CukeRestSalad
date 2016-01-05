@@ -1,5 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'maven'
+apply plugin: 'signing'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -32,14 +34,78 @@ dependencies {
   testCompile('org.mock-server:mockserver-netty:3.9.17')
 
 }
-
-test { systemProperties 'property': 'value' }
-
-uploadArchives {
-  repositories {
-    flatDir { dirs 'repos' }
-  }
-}
 task wrapper(type: Wrapper) {
   gradleVersion = '2.9'
+}
+
+
+////////////////////////////////////////////////////
+// this is needed for adding javadoc jar and source jar in distribution
+task javadocJar(type: Jar) {
+  classifier = 'javadoc'
+  from javadoc
+}
+task sourcesJar(type: Jar) {
+  classifier = 'sources'
+  from sourceSets.main.allSource
+}
+artifacts {
+  archives javadocJar, sourcesJar
+}
+////////////////////////////////////////////////////
+
+
+////////////////////////////////////////////////////
+// this is needed for signing the jars in distribution
+signing {
+    sign configurations.archives
+}
+////////////////////////////////////////////////////
+
+
+////////////////////////////////////////////////////
+// this is needed for deploying the jars to maven central
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+        authentication(userName: ossrhUsername, password: ossrhPassword)
+      }
+
+      snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+        authentication(userName: ossrhUsername, password: ossrhPassword)
+      }
+
+      pom.project {
+        name archivesBaseName
+        packaging 'jar'
+        // optionally artifactId can be defined here
+        description 'This module is intended to help in testing REST services.'
+        url 'https://github.com/bharathcp/CukeRestSalad'
+
+        scm {
+          connection 'https://github.com/bharathcp/CukeRestSalad.git'
+          developerConnection 'https://github.com/bharathcp/CukeRestSalad.git'
+          url 'https://github.com/bharathcp/CukeRestSalad'
+        }
+
+        licenses {
+          license {
+            name 'The Apache License, Version 2.0'
+            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+          }
+        }
+
+        developers {
+          developer {
+            id 'bharathcp'
+            name 'Bharath Prakash'
+            email 'cippy.bharath@gmail.com'
+          }
+        }
+      }
+    }
+  }
 }
