@@ -11,13 +11,13 @@ JDK8
 
 - Clone the repository
 - In the same directory level as CukeRestSalad, create a gradle project similar to [SampleCukeRestTest](https://github.com/bharathcp/SampleCukeRestTest) that will have all the cucumber tests. This project is going to be the project you will develop to test the rest service. Your directories should be as below:
-```
+```shell
 <git clone path>/CukeRestSalad
 <git clone path>/SampleCukeRestTest
 ```
 - Create feature files inside SampleCukeRestTest project under src/main/resources/feature
 - Run the below commands for linux/mac:
-```
+```shell
 cd <git clone path>/SampleCukeRestTest
 sh gradlew clean build
 unzip build/distributions/SampleCukeRestTest-1.0.zip -d build/distributions/
@@ -25,7 +25,7 @@ sh build/distributions/SampleCukeRestTest-1.0/bin/SampleCukeRestTest com.bdd.res
 ```
 
 ## Sample feature file:
-```
+```gherkin
 Feature: A feature to demonstrate REST cucumber util by testing FB graph api /me
 
   Scenario: testing for invalid access token on FB graph api /me
@@ -53,7 +53,7 @@ Feature: A feature to demonstrate REST cucumber util by testing FB graph api /me
 This module uses [jayway/JsonPath](https://github.com/jayway/JsonPath) for parsing and validating response. Assuming a sample response for demonstration there are already many step definitions for validation already implemented.
 
 Given the response is:
-```
+```javascript
 {
     "store": {
         "book": [
@@ -94,7 +94,7 @@ Given the response is:
 }
 ```
 Below step definitions validate the :
-```
+```gherkin
     And The response should contain "$..expensive" with value "10"
     And The response should contain "$..expensive"
     And The response should contain "$..author" with values:
