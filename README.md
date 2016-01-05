@@ -93,7 +93,7 @@ Given the response is:
     "expensive": 10
 }
 ```
-Below step definitions validate the :
+Below step definitions validate the the response:
 ```gherkin
     And The response should contain "$..expensive" with value "10"
     And The response should contain "$..expensive"
