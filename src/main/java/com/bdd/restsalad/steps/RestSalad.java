@@ -131,15 +131,15 @@ public class RestSalad {
 
   }
 
-  @Then("^The response should contain \"([^\"]*)\" is empty array$")
-  public void the_response_should_contain_is_empty_array(String arrayPath) throws Throwable {
+  @Then("^The response should contain \"([^\"]*)\" as empty array$")
+  public void the_response_should_contain_as_empty_array(String arrayPath) throws Throwable {
     List<Object> achvAttrValuesActual =
         JsonPath.parse(RestContext.restResponse).read(arrayPath, new TypeRef<List>() {});
     assertThat(achvAttrValuesActual, emptyIterable());
   }
 
-  @Then("^The response should contain \"([^\"]*)\" contains (\\d+) elements$")
-  public void the_response_should_contain_contains_elements(String arrayPath, int arraySize) throws Throwable {
+  @Then("^The response should contain \"([^\"]*)\" with (\\d+) elements$")
+  public void the_response_should_contain_with_elements(String arrayPath, int arraySize) throws Throwable {
     List<Object> achvAttrValuesActual =
         JsonPath.parse(RestContext.restResponse).read(arrayPath, new TypeRef<List>() {});
     assertThat(achvAttrValuesActual, iterableWithSize(arraySize));
