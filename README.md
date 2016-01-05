@@ -10,6 +10,6 @@ JDK8
 ## Getting Started
 
 1. Clone the repository
-2. In the same directory level as CukeRestSalad, create a gradle project that will have all the cucumber tests. This project is going to be the project you will develop to test the rest service.
+2. In the same directory level as CukeRestSalad, create a gradle project similar to [SampleCukeRestTest](https://github.com/bharathcp/SampleCukeRestTest) that will have all the cucumber tests. This project is going to be the project you will develop to test the rest service.
 3. Create feature files inside this project under src/main/resources/feature
-4. Add application plugin to the build.gradle
+
