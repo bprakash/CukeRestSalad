@@ -1,7 +1,7 @@
-package com.cukesalad.rest.support;
+package org.cukesalad.rest.support;
 
-import static com.cukesalad.rest.support.RestContext.env;
-import static com.cukesalad.rest.support.RestContext.restProps;
+import static org.cukesalad.rest.support.RestContext.env;
+import static org.cukesalad.rest.support.RestContext.restProps;
 
 import java.io.IOException;
 import java.io.InputStream;

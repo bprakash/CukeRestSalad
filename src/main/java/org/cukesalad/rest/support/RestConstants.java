@@ -1,4 +1,4 @@
-package com.cukesalad.rest.support;
+package org.cukesalad.rest.support;
 
 public interface RestConstants {
 

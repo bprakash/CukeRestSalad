@@ -5,4 +5,4 @@
  * @author a542099
  *
  */
-package com.cukesalad.rest.steps;
+package org.cukesalad.rest.steps;

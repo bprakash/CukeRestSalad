@@ -5,4 +5,4 @@
  * @author a542099
  *
  */
-package com.cukesalad.rest.support;
+package org.cukesalad.rest.support;

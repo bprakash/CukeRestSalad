@@ -1,4 +1,4 @@
-package com.cukesalad.rest.steps;
+package org.cukesalad.rest.steps;
 
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.emptyIterable;
@@ -14,9 +14,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.cukesalad.rest.support.RestConstants;
+import org.cukesalad.rest.support.RestContext;
 
-import com.cukesalad.rest.support.RestConstants;
-import com.cukesalad.rest.support.RestContext;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.TypeRef;
 import com.sun.jersey.api.client.Client;

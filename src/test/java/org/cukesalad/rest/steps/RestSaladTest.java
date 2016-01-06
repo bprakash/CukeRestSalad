@@ -1,4 +1,4 @@
-package com.cukesalad.rest.steps;
+package org.cukesalad.rest.steps;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -15,6 +15,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
+import org.cukesalad.rest.steps.RestSalad;
+import org.cukesalad.rest.support.RestConstants;
+import org.cukesalad.rest.support.RestContext;
+import org.cukesalad.rest.support.RestHook;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -23,10 +27,6 @@ import org.junit.Test;
 import org.mockserver.integration.ClientAndServer;
 import org.mockserver.model.HttpRequest;
 
-import com.cukesalad.rest.steps.RestSalad;
-import com.cukesalad.rest.support.RestConstants;
-import com.cukesalad.rest.support.RestContext;
-import com.cukesalad.rest.support.RestHook;
 import com.sun.jersey.api.client.Client;
 
 import cucumber.api.DataTable;

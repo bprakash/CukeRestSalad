@@ -1,4 +1,4 @@
-package com.cukesalad.rest.runner;
+package org.cukesalad.rest.runner;
 
 import org.junit.runner.RunWith;
 
