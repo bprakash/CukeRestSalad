@@ -83,7 +83,7 @@ uploadArchives {
         packaging 'jar'
         // optionally artifactId can be defined here
         description 'This module is intended to help in testing REST services.'
-        url 'https://github.com/bharathcp/CukeRestSalad'
+        url 'http://cukesalad.org'
 
         scm {
           connection 'https://github.com/bharathcp/CukeRestSalad.git'
