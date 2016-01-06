@@ -21,7 +21,7 @@ JDK8
 cd <git clone path>/SampleCukeRestTest
 sh gradlew clean build
 unzip build/distributions/SampleCukeRestTest-1.0.zip -d build/distributions/
-sh build/distributions/SampleCukeRestTest-1.0/bin/SampleCukeRestTest com.cukesalad.rest.runner.Runner
+sh build/distributions/SampleCukeRestTest-1.0/bin/SampleCukeRestTest org.cukesalad.rest.runner.Runner
 ```
 
 ## Sample feature file:
