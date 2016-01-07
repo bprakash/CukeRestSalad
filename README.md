@@ -8,20 +8,19 @@ Anyone who has json based REST services can use this for testing their services.
 JDK8
 
 ## Getting Started
-
-- Clone the repository
-- In the same directory level as CukeRestSalad, create a gradle project similar to [SampleCukeRestTest](https://github.com/bharathcp/SampleCukeRestTest) that will have all the cucumber tests. This project is going to be the project you will develop to test the rest service. Your directories should be as below:
-```shell
-<git clone path>/CukeRestSalad
-<git clone path>/SampleCukeRestTest
+Lets say you want to test a REST service as a black box. 
+- Create the project you want to use for testing. This will host all you feature files.
+- Add the below dependancy similar to - [SampleCukeRestTest](https://github.com/bharathcp/SampleCukeRestTest) :
+```gradle
+  compile('org.cukesalad:CukeRestSalad:1.0.0')
 ```
-- Create feature files inside SampleCukeRestTest project under src/main/resources/feature
+- Create feature files inside your project under src/main/resources/feature
 - Run the below commands for linux/mac:
 ```shell
-cd <git clone path>/SampleCukeRestTest
-sh gradlew clean build
-unzip build/distributions/SampleCukeRestTest-1.0.zip -d build/distributions/
-sh build/distributions/SampleCukeRestTest-1.0/bin/SampleCukeRestTest org.cukesalad.rest.runner.Runner
+> cd <git project root>
+> sh gradlew clean build
+> unzip build/distributions/<your project name>-1.0.zip -d build/distributions/
+> sh build/distributions/<your project name>-1.0/bin/<your project name> org.cukesalad.rest.runner.Runner
 ```
 
 ## Sample feature file:
@@ -111,4 +110,63 @@ Below step definitions validate the the response:
 ```
 The last step will fail because the reponse is not empty.
 
+## XML response support
+This plugin assumes json response by default. But if the http response contains a header - "Content-Type: application/xml", then it will try to parse the response as xml. If the response is xml, then the xpath in the feature files should comply with the java xpath syntax. These are pretty good tutorials to start off - "[Java XPath Tutorial](http://viralpatel.net/blogs/java-xml-xpath-tutorial-parse-xml/)" and "[How XPath Works](https://docs.oracle.com/javase/tutorial/jaxp/xslt/xpath.html)"
+For the sake of demonstration we will take and example xml and define step definition for the same:
+
+```xml
+<response>
+	<store>
+		<book>
+			<category>reference</category>
+			<author>Nigel Rees</author>
+			<title>Sayings of the Century</title>
+			<price>8.95</price>
+		</book>
+		<book>
+			<category>fiction</category>
+			<author>Evelyn Waugh</author>
+			<title>Sword of Honour</title>
+			<price>12.99</price>
+		</book>
+		<book>
+			<category>fiction</category>
+			<author>Herman Melville</author>
+			<title>Moby Dick</title>
+			<isbn>0-553-21311-3</isbn>
+			<price>8.99</price>
+		</book>
+		<book>
+			<category>fiction</category>
+			<author>J. R. R. Tolkien</author>
+			<title>The Lord of the Rings</title>
+			<isbn>0-395-19395-8</isbn>
+			<price>22.99</price>
+		</book>
+		<bicycle>
+			<color>red</color>
+			<price>19.95</price>
+		</bicycle>
+		<unicorn></unicorn>
+	</store>
+	<expensive>10</expensive>
+</response>
+```
+
+The step definitions for the above xml would be:
+```gherkin
+    And The response should contain "//store//color" with value "red"
+    And The response should contain "//expensive"
+    And The response should contain "//author" with values:
+    | Nigel Rees  | Evelyn Waugh  | Herman Melville | J. R. R. Tolkien  |
+    And The "//book" array has element with below attributes:
+     | category  | author           | title                  | price |
+     | reference | Nigel Rees       | Sayings of the Century | 8.95  | 
+     | fiction   | Evelyn Waugh     | Sword of Honour        | 12.99 | 
+     | fiction   | Herman Melville  | Moby Dick              | 8.99  | 
+     | fiction   | J. R. R. Tolkien | The Lord of the Rings  | 22.99 | 
+    And The response should contain "//unicorn" as empty array
+    And The response should contain "//book" with 4 elements
+    And The response is empty 
+```
 These are just a few steps I could think of. Please go ahead and contribute more steps if you think it is appropriate. Else suggest any other step that is needed and I will add them.
