@@ -169,4 +169,11 @@ The step definitions for the above xml would be:
     And The response should contain "//book" with 4 elements
     And The response is empty 
 ```
-These are just a few steps I could think of. Please go ahead and contribute more steps if you think it is appropriate. Else suggest any other step that is needed and I will add them.
+
+##Latest release:
+Release 1.0.1
+
+## How to contribute
+These are just a few steps I could think of. If there are any other feature that you wish for, please go ahead and create the same in the [issue tracker](https://github.com/cukesalad/CukeRestSalad/issues). I will make best efforts to add them ASAP.
+If you wish contribute by coding, please fork the repository and raise a pull request. 
+
