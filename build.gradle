@@ -1,3 +1,12 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        //classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.4'
+    }
+}
+//apply plugin: 'com.jfrog.bintray'
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'maven'
@@ -7,7 +16,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 group = 'org.cukesalad'
 archivesBaseName = project.name
-version = '1.0'
+version = '1.0.0'
 jar {
   manifest {
     attributes 'Implementation-Title': 'Gradle Quickstart',
@@ -86,9 +95,9 @@ uploadArchives {
         url 'http://cukesalad.org'
 
         scm {
-          connection 'https://github.com/bharathcp/CukeRestSalad.git'
-          developerConnection 'https://github.com/bharathcp/CukeRestSalad.git'
-          url 'https://github.com/bharathcp/CukeRestSalad'
+          connection 'scm:git:git@github.com:cukesalad/CukeRestSalad.git'
+          developerConnection 'scm:git:git@github.com:cukesalad/CukeRestSalad.git'
+          url 'https://github.com/cukesalad/CukeRestSalad'
         }
 
         licenses {
@@ -109,3 +118,14 @@ uploadArchives {
     }
   }
 }
+
+////////////////////////////////////////////////
+// This is needed for jfrog bintray plugin
+/*pkg {
+  version {
+              name = '1.0-SNAPSHOT'
+              desc = 'Cuke REST salad'
+              released  = new Date()
+      }
+}*/
+////////////////////////////////////////////////
