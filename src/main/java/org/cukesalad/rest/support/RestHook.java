@@ -9,6 +9,8 @@ import java.util.EnumSet;
 import java.util.Properties;
 import java.util.Set;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,20 +30,20 @@ public class RestHook {
   
   public static final int ORDER = 0;
 
-  public static void refresh() {
+  public static void refresh() throws ParserConfigurationException {
     LOG.debug("Refreshing restProperties");
     RestContext.refresh();
   }
 
   @Before(order = ORDER)
-  public void beforeHook() {
+  public void beforeHook() throws ParserConfigurationException {
     refresh();
     loadProperties();
     setupJsonConfig();
   }
 
   @After
-  public void afterHook() throws IOException {
+  public void afterHook() throws IOException, ParserConfigurationException {
     refresh();
   }
 

@@ -1,18 +1,20 @@
 package org.cukesalad.rest.steps;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 import static org.mockserver.verify.VerificationTimes.once;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.io.IOUtils;
 import org.cukesalad.rest.steps.RestSalad;
@@ -116,6 +118,25 @@ public class RestSaladTest {
     mockServer.verify(request, once());
     stopClientServer();
   }
+  
+  @Test
+  public void testI_retrieve_the_resource_GET_xml() throws Throwable {
+    String method;
+    String serviceUrl = "http://localhost:8080/";
+    createClientServer(8080);
+    String response = "<response>Success</response>";
+    HttpRequest request = request().withPath("/");
+    mockServer.when(request).respond(response(response).withHeader("Content-Type", "application/xml"));
+    RestContext.webresource = Client.create().resource(serviceUrl);
+    RestContext.method = "GET";
+    // test get request without header
+    restSalad.i_retrieve_the_resource();
+    mockServer.verify(request, once());
+    assertEquals("<response>Success</response>", RestContext.restResponse);
+    assertEquals("application/xml", RestContext.responseType);
+    assertNotNull(RestContext.xmlResponseDocument);
+    stopClientServer();
+  }
 
   @Test
   public void testI_retrieve_the_resource_GET_withHeader() throws Throwable {
@@ -213,11 +234,27 @@ public class RestSaladTest {
     RestContext.restResponse = getFile("testResponse.json");
     restSalad.the_response_should_contain_with_value("$.store..color", "red");
   }
+  
+  @Test
+  public void testThe_response_should_contain_with_value_xml() throws Throwable {
+    RestContext.restResponse = getFile("testResponse.xml");
+    RestContext.responseType = MediaType.APPLICATION_XML;
+    RestContext.xmlResponseDocument = RestContext.docBuilder.parse(new ByteArrayInputStream(RestContext.restResponse.getBytes()));
+    restSalad.the_response_should_contain_with_value("//store//color", "red");
+  }
 
   @Test
   public void testThe_response_should_contain() throws Throwable {
     RestContext.restResponse = getFile("testResponse.json");
     restSalad.the_response_should_contain("$..category");
+  }
+
+  @Test
+  public void testThe_response_should_contain_xml() throws Throwable {
+    RestContext.restResponse = getFile("testResponse.xml");
+    RestContext.responseType = MediaType.APPLICATION_XML;
+    RestContext.xmlResponseDocument = RestContext.docBuilder.parse(new ByteArrayInputStream(RestContext.restResponse.getBytes()));
+    restSalad.the_response_should_contain("//category");
   }
 
   @Test
@@ -227,6 +264,17 @@ public class RestSaladTest {
     row.add(Arrays.asList("reference", "fiction", "fiction", "fiction"));
     DataTable exptectedTable = DataTable.create(row);
     restSalad.the_response_should_contain_with_values("$..category", exptectedTable);
+  }
+  
+  @Test
+  public void testThe_response_should_contain_with_values_xml() throws Throwable {
+    RestContext.restResponse = getFile("testResponse.xml");
+    RestContext.responseType = MediaType.APPLICATION_XML;
+    RestContext.xmlResponseDocument = RestContext.docBuilder.parse(new ByteArrayInputStream(RestContext.restResponse.getBytes()));
+    List<List<String>> row = new ArrayList<List<String>>();
+    row.add(Arrays.asList("reference", "fiction", "fiction", "fiction"));
+    DataTable exptectedTable = DataTable.create(row);
+    restSalad.the_response_should_contain_with_values("//category", exptectedTable);
   }
 
   @Test
@@ -241,17 +289,47 @@ public class RestSaladTest {
     DataTable exptectedTable = DataTable.create(row);
     restSalad.the_array_has_element_with_below_attributes("$..book", exptectedTable);
   }
+  
+  @Test
+  public void testThe_array_has_element_with_below_attributes_xml() throws Throwable {
+    RestContext.restResponse = getFile("testResponse.xml");
+    RestContext.responseType = MediaType.APPLICATION_XML;
+    RestContext.xmlResponseDocument = RestContext.docBuilder.parse(new ByteArrayInputStream(RestContext.restResponse.getBytes()));
+    List<List<String>> row = new ArrayList<List<String>>();
+    row.add(Arrays.asList("category", "author", "title", "price"));
+    row.add(Arrays.asList("reference", "Nigel Rees", "Sayings of the Century", "8.95"));
+    row.add(Arrays.asList("fiction", "Evelyn Waugh", "Sword of Honour", "12.99"));
+    row.add(Arrays.asList("fiction", "Herman Melville", "Moby Dick", "8.99"));
+    row.add(Arrays.asList("fiction", "J. R. R. Tolkien", "The Lord of the Rings", "22.99"));
+    DataTable exptectedTable = DataTable.create(row);
+    restSalad.the_array_has_element_with_below_attributes("//book", exptectedTable);
+  }
 
   @Test
   public void testThe_response_should_contain_as_empty_array() throws Throwable {
     RestContext.restResponse = getFile("testResponse.json");
-    restSalad.the_response_should_contain_as_empty_array("$..unicorn[*]");
+    restSalad.the_response_should_contain_as_empty_array("unicorn[*]");
+  }
+  @Test
+  public void testThe_response_should_contain_as_empty_array_xml() throws Throwable {
+    RestContext.restResponse = getFile("testResponse.xml");
+    RestContext.responseType = MediaType.APPLICATION_XML;
+    RestContext.xmlResponseDocument = RestContext.docBuilder.parse(new ByteArrayInputStream(RestContext.restResponse.getBytes()));
+    restSalad.the_response_should_contain_as_empty_array("//unicorn");
   }
 
   @Test
   public void testThe_response_should_contain_with_elements() throws Throwable {
     RestContext.restResponse = getFile("testResponse.json");
     restSalad.the_response_should_contain_with_elements("$..book[*]", 4);
+  }
+
+  @Test
+  public void testThe_response_should_contain_with_elements_xml() throws Throwable {
+    RestContext.restResponse = getFile("testResponse.xml");
+    RestContext.responseType = MediaType.APPLICATION_XML;
+    RestContext.xmlResponseDocument = RestContext.docBuilder.parse(new ByteArrayInputStream(RestContext.restResponse.getBytes()));
+    restSalad.the_response_should_contain_with_elements("//book", 4);
   }
 
   @Test

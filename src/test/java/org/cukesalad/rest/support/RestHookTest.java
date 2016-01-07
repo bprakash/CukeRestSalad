@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import static org.hamcrest.Matchers.*;
 
 import org.cukesalad.rest.support.RestContext;
@@ -13,7 +15,7 @@ import org.junit.Test;
 public class RestHookTest {
 
   @Test
-  public void testRefresh() {
+  public void testRefresh() throws ParserConfigurationException {
     RestHook.refresh();
     assertNull(RestContext.clientResponse);
     assertNull(RestContext.method);
@@ -25,7 +27,7 @@ public class RestHookTest {
   }
   
   @Test
-  public void testBefore() {
+  public void testBefore() throws ParserConfigurationException {
     System.setProperty("env", "junit");
     System.setProperty("prop3", "restsalad.sysprop");
 
@@ -45,7 +47,7 @@ public class RestHookTest {
   
   
   @Test
-  public void testAfter() throws IOException {
+  public void testAfter() throws IOException, ParserConfigurationException {
 
     RestHook restHook = new RestHook();
     restHook.afterHook();
