@@ -16,6 +16,7 @@ import org.w3c.dom.Document;
 
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 public class RestContext {
   public static Properties restProps = new Properties();
@@ -26,7 +27,7 @@ public class RestContext {
   public static String method;
   public static ClientResponse clientResponse;
   public static String restResponse;
-  public static MultivaluedMap<String, String> responseHeader;
+  public static MultivaluedMap<String, String> responseHeader = new MultivaluedMapImpl();
   public static String responseType;
   public static DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
   public static DocumentBuilder docBuilder = null;
@@ -42,7 +43,7 @@ public class RestContext {
     method = null;
     clientResponse = null;
     restResponse = null;
-    responseHeader = null;
+    responseHeader = new MultivaluedMapImpl();
     responseType = null;
     docBuilder = docBuilderFactory.newDocumentBuilder();
     xmlResponseDocument = null;

@@ -92,6 +92,15 @@ public class RestSalad {
     assertEquals(status, RestContext.clientResponse.getStatus());
   }
 
+  @Then("^The response should contain following headers:$")
+  public void the_response_should_contain_following_headers(DataTable headerTable) {
+    List<String> headerNamesToMatch = headerTable.topCells();
+    List<List<String>> headerValuesTableToMatch = headerTable.cells(1);
+    for (List<String> headerValues : headerValuesTableToMatch) {
+      assertEquals(headerValues.get(1), RestContext.responseHeader.get(headerValues.get(0)).get(0)); 
+    }    
+  }
+  
   @Then("^The response should contain \"([^\"]*)\" with value \"([^\"]*)\"$")
   public void the_response_should_contain_with_value(String achvAttrPathToCheck, String valueExpected)
       throws Throwable {

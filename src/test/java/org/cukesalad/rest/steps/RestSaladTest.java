@@ -230,6 +230,16 @@ public class RestSaladTest {
   }
 
   @Test
+  public void testThe_response_should_contain_following_headers() throws Throwable {
+    RestContext.responseHeader.add("Content-Type", "application/json");
+    List<List<String>> raw = new ArrayList<List<String>>();
+    raw.add(Arrays.asList("headerName","headerValue"));
+    raw.add(Arrays.asList("Content-Type","application/json"));
+    DataTable headerTable = DataTable.create(raw );
+    restSalad.the_response_should_contain_following_headers(headerTable);
+  }
+
+  @Test
   public void testThe_response_should_contain_with_value() throws Throwable {
     RestContext.restResponse = getFile("testResponse.json");
     restSalad.the_response_should_contain_with_value("$.store..color", "red");
