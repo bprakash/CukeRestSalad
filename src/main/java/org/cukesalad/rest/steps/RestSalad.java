@@ -15,8 +15,11 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.xml.xpath.XPathConstants;
 
+import com.sun.jersey.core.util.MultivaluedMapImpl;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.cukesalad.rest.support.RestConstants;
 import org.cukesalad.rest.support.RestContext;
@@ -44,6 +47,14 @@ public class RestSalad {
   @Given("^I add \"([^\"]*)\" equal to \"([^\"]*)\" as parameter to request$")
   public void i_add_equal_to_as_parameter_to_request(String key, String value) throws Throwable {
     RestContext.webresource = RestContext.webresource.queryParam(key, value);
+  }
+  @Given("^I add below values as parameters to the request:$")
+  public void i_add_below_values_as_parameters_to_the_request(DataTable paramTable) throws Throwable {
+    Map<String,String> paramMap = paramTable.asMap(String.class,String.class);
+    paramMap.remove("paramName");
+    MultivaluedMap multivaluedParamMap = new MultivaluedMapImpl();
+    multivaluedParamMap.putAll(paramMap);
+    RestContext.webresource = RestContext.webresource.queryParams(multivaluedParamMap);
   }
 
   @Given("^I add post body to the request as:$")
