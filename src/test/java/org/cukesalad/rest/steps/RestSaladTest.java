@@ -15,7 +15,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 
+import com.sun.jersey.core.util.MultivaluedMapImpl;
 import org.apache.commons.io.IOUtils;
 import org.cukesalad.rest.steps.RestSalad;
 import org.cukesalad.rest.support.RestConstants;
@@ -78,6 +80,17 @@ public class RestSaladTest {
   public void testI_add_equal_to_as_parameter_to_request() throws Throwable {
     restSalad.i_start_building_a_request_with_method_and_URL("post", "http://someUrl.com");
     restSalad.i_add_equal_to_as_parameter_to_request("key", "value");
+    assertEquals("POST", RestContext.method);
+    assertEquals("http://someUrl.com?key=value", RestContext.webresource.getURI().toString());
+  }
+
+  public void testI_add_below_values_as_parameters_to_the_request() throws Throwable {
+    List<List<String>> raw = new ArrayList<List<String>>();
+    raw.add(Arrays.asList("paramName","paramValue"));
+    raw.add(Arrays.asList("key","value"));
+    DataTable paramTable = DataTable.create(raw );
+    restSalad.i_start_building_a_request_with_method_and_URL("post", "http://someUrl.com");
+    restSalad.i_add_below_values_as_parameters_to_the_request(paramTable);
     assertEquals("POST", RestContext.method);
     assertEquals("http://someUrl.com?key=value", RestContext.webresource.getURI().toString());
   }
