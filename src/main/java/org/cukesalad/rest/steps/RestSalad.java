@@ -13,6 +13,7 @@ import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
@@ -21,6 +22,7 @@ import javax.xml.xpath.XPathConstants;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.cukesalad.context.CukeSaladContext;
 import org.cukesalad.rest.support.RestConstants;
 import org.cukesalad.rest.support.RestContext;
 import org.w3c.dom.Node;
@@ -50,11 +52,18 @@ public class RestSalad {
   }
   @Given("^I add below values as parameters to the request:$")
   public void i_add_below_values_as_parameters_to_the_request(DataTable paramTable) throws Throwable {
-    Map<String,String> paramMap = paramTable.asMap(String.class,String.class);
-    paramMap.remove("paramName");
-    MultivaluedMap multivaluedParamMap = new MultivaluedMapImpl();
-    multivaluedParamMap.putAll(paramMap);
-    RestContext.webresource = RestContext.webresource.queryParams(multivaluedParamMap);
+    //Map<String,String> paramMap = paramTable.asMap(String.class,String.class);
+    //paramMap.remove("paramName");
+    //MultivaluedMap multivaluedParamMap = new MultivaluedMapImpl();
+
+    for (Entry<String,String> headerEntry: paramTable.asMap(String.class,String.class).entrySet()) {
+      if(!headerEntry.getKey().equals("paramName")){
+        RestContext.webresource = RestContext.webresource.queryParam(headerEntry.getKey(),headerEntry.getValue());
+      }
+    }
+
+    //multivaluedParamMap.putAll(paramMap);
+    //RestContext.webresource = RestContext.webresource.queryParams(multivaluedParamMap);
   }
 
   @Given("^I add post body to the request as:$")
@@ -111,7 +120,12 @@ public class RestSalad {
       assertEquals(headerValues.get(1), RestContext.responseHeader.get(headerValues.get(0)).get(0)); 
     }    
   }
-  
+
+  @Then("^I add response headers to \"([^\"]*)\" context$")
+  public void I_add_response_headers_to_context(String contextName) {
+    CukeSaladContext.addToContext(contextName,RestContext.responseHeader.getClass(),RestContext.responseHeader);
+  }
+
   @Then("^The response should contain \"([^\"]*)\" with value \"([^\"]*)\"$")
   public void the_response_should_contain_with_value(String achvAttrPathToCheck, String valueExpected)
       throws Throwable {

@@ -19,6 +19,7 @@ import javax.ws.rs.core.MultivaluedMap;
 
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 import org.apache.commons.io.IOUtils;
+import org.cukesalad.context.CukeSaladContext;
 import org.cukesalad.rest.steps.RestSalad;
 import org.cukesalad.rest.support.RestConstants;
 import org.cukesalad.rest.support.RestContext;
@@ -84,6 +85,7 @@ public class RestSaladTest {
     assertEquals("http://someUrl.com?key=value", RestContext.webresource.getURI().toString());
   }
 
+  @Test
   public void testI_add_below_values_as_parameters_to_the_request() throws Throwable {
     List<List<String>> raw = new ArrayList<List<String>>();
     raw.add(Arrays.asList("paramName","paramValue"));
@@ -245,12 +247,13 @@ public class RestSaladTest {
   @Test
   public void testThe_response_should_contain_following_headers() throws Throwable {
     RestContext.responseHeader.add("Content-Type", "application/json");
-    List<List<String>> raw = new ArrayList<List<String>>();
+    List<List<String>> raw = new ArrayList<>();
     raw.add(Arrays.asList("headerName","headerValue"));
     raw.add(Arrays.asList("Content-Type","application/json"));
     DataTable headerTable = DataTable.create(raw );
     restSalad.the_response_should_contain_following_headers(headerTable);
   }
+
 
   @Test
   public void testThe_response_should_contain_with_value() throws Throwable {
